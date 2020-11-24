@@ -21,16 +21,13 @@ public class CaffeineCacheConfig {
 
     /**
      * 创建基于Caffeine的Cache Manager
-     * @return
      */
-    @Bean("caffeineCacheManager")
-    public CacheManager caffeineCacheManager() {
+    @Bean("localCacheManager")
+    public CacheManager localCacheManager() {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager();
-
         cacheManager.setCaffeine(Caffeine.newBuilder().recordStats()
                 .expireAfterWrite(10000, TimeUnit.SECONDS)
                 .maximumSize(3));
-
         return cacheManager;
     }
 
