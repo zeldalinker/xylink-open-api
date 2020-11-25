@@ -19,6 +19,9 @@
 */target/*
 /.idea/
 
+
+cataline.*/
+
 ### NetBeans ###
 nbproject/private/
 build/

@@ -37,7 +37,7 @@ import java.util.Map;
  */
 @Service
 public class MeetingService {
-    private static final Logger logger = LoggerFactory.getLogger(HomeService.class);
+    private static final Logger logger = LoggerFactory.getLogger(MeetingService.class);
 
     @Resource
     private MeetingUserMapper userMapper;

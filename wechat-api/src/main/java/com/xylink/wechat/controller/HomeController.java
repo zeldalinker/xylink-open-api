@@ -29,13 +29,13 @@ public class HomeController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public void toIndexPage(@RequestParam String code, HttpServletResponse response)  {
+    public void toPage(@RequestParam String code, HttpServletResponse response)  {
         logger.info(" index  code : {}", code);
         try {
             String page = homeService.toPage(code);
             response.sendRedirect(page);
         } catch (BusinessException | IOException e) {
-            logger.info("[跳转政务微信首页异常]",e);
+            logger.error("[跳转政务微信首页异常]",e);
         }
     }
 }

@@ -21,12 +21,12 @@ public class EnvConfiguration {
 //        return new XyConfig(host, enterpriseId, instance,token);
 //    }
 //
-    @Bean
-    public WeChatConfig wechatConfig(@Value("${wechat.corpId}") String corpId,
-                                     @Value("${wechat.corpSecret}") String corpSecret,
-                                     @Value("${wechat.agentId}") String agentId,
-                                     @Value("${wechat.api.host}") String apiHost,
-                                     @Value("${wechat.index.page}") String indexPage){
-        return new WeChatConfig(corpId, corpSecret, agentId, apiHost, indexPage);
-    }
+//    @Bean
+//    public WeChatConfig wechatConfig(@Value("${wechat.corpId}") String corpId,
+//                                     @Value("${wechat.corpSecret}") String corpSecret,
+//                                     @Value("${wechat.agentId}") String agentId,
+//                                     @Value("${wechat.host}") String apiHost,
+//                                     @Value("${wechat.page}") String indexPage){
+//        return new WeChatConfig(corpId, corpSecret, agentId, apiHost, indexPage);
+//    }
 }

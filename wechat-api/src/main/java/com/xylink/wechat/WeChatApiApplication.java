@@ -4,6 +4,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 /**
@@ -23,6 +24,6 @@ public class WeChatApiApplication extends SpringBootServletInitializer implement
 
     @Override
     public void run(String... args)  {
-        System.out.println(" third-wechat-api run success !");
+        System.out.println(" [ wechat-api ] run success !");
     }
 }

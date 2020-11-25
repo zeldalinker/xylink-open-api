@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
  * date: 2020-10-24
  */
 @Configuration
-@NacosPropertySource(dataId = "国税", groupId = "xy-cloud",autoRefreshed = true)
+@NacosPropertySource(dataId = "xycloud", groupId = "xy-wechat-api",autoRefreshed = true)
 public class XyConfig {
     @NacosValue("${host}")
     private String host;
@@ -20,15 +20,6 @@ public class XyConfig {
     private String instance;
     @NacosValue("${token}")
     private String token;
-
-
-//    public XyConfig(String host, String enterpriseId, String instance, String token) {
-//        this.host = host;
-//        this.enterpriseId = enterpriseId;
-//        this.instance = instance;
-//        this.token = token;
-//    }
-
 
 
     public String getToken() {
