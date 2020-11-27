@@ -1,13 +1,8 @@
 package com.xylink.wechat.service;
 
-import com.alibaba.fastjson.JSONObject;
-import com.xylink.wechat.bean.wechat.UserInfo;
-import com.xylink.wechat.exception.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 /**

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration debug="true">
+<configuration scan="false" scanPeriod="60 seconds" debug="false">
     <include resource="org/springframework/boot/logging/logback/defaults.xml" />
     <property name="LOG_HOME" value="${catalina.base}/logs"/>
     <!-- 控制台输出 -->
@@ -11,26 +11,8 @@
         </encoder>
     </appender>
 
-    <appender name="RDSOUT" class="com.cwbase.logback.RedisAppender">
-        <source>xylink-wechat-api</source>
-        <tags>dev</tags>
-        <host>101.226.16.213</host>
-        <port>6379</port>
-        <key>wechat-api</key>
-
-        <layout class="com.cwbase.logback.JSONEventLayout">
-            <!-- JSONEventLayout Attributes Here -->
-            <source>wechat-api</source>
-            <sourcePath>wechat-api-source-path</sourcePath>
-            <type>wechat-application</type>
-        </layout>
-    </appender>
-
-
-
     <!-- 日志输出级别 -->
     <root level="INFO">
-        <appender-ref ref="RDSOUT"/>
         <appender-ref ref="STDOUT"/>
     </root>
 

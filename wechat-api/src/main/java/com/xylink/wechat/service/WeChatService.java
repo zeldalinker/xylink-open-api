@@ -3,7 +3,7 @@ package com.xylink.wechat.service;
 import com.alibaba.fastjson.JSONObject;
 import com.xylink.wechat.bean.wechat.UserDetail;
 import com.xylink.wechat.bean.wechat.UserInfo;
-import com.xylink.wechat.config.factory.WeChatConfig;
+import com.xylink.wechat.config.factory.WeChatApiConfig;
 import com.xylink.wechat.exception.BusinessException;
 import jodd.util.StringUtil;
 import org.slf4j.Logger;
@@ -30,7 +30,7 @@ public class WeChatService {
     private static final Logger logger = LoggerFactory.getLogger(WeChatService.class);
 
     @Resource
-    private WeChatConfig weChatConfig;
+    private WeChatApiConfig apiConfig;
 
     @Resource
     private RestTemplate restTemplate;
@@ -39,7 +39,7 @@ public class WeChatService {
     @Cacheable(value = "wechat:gettoken")
     public String getAccessToken() throws BusinessException {
         logger.info(" [ WeChat access_token ]  ");
-        ResponseEntity<String> response = restTemplate.getForEntity(weChatConfig.getAccessTokenUrl(), String.class);
+        ResponseEntity<String> response = restTemplate.getForEntity(apiConfig.getAccessTokenUrl(), String.class);
         if(response.getStatusCode() != HttpStatus.OK){
             throw new BusinessException(" wechat http failure ");
         }
@@ -51,7 +51,7 @@ public class WeChatService {
     @Cacheable(value = "wechat:user_getuserinfo",key="#code+#token")
     public UserInfo getUserInfo(String code, String token) throws BusinessException {
         logger.info(" [ WeChat GetUserInfo]  ");
-        String url = weChatConfig.getUserInfoUrl(token,code);
+        String url = apiConfig.getUserInfoUrl(token,code);
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         if(response.getStatusCode() != HttpStatus.OK){
             throw new BusinessException(" wechat http failure ");
@@ -61,7 +61,7 @@ public class WeChatService {
 
     @Cacheable(value = "wechat:get_jsapi_ticket",key="#token")
     public String getJsApiTicket(String token) throws BusinessException {
-        String url = weChatConfig.getJsApiTicketUrl(token);
+        String url = apiConfig.getJsApiTicketUrl(token);
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         if(response.getStatusCode() != HttpStatus.OK){
             throw new BusinessException(" wechat http get_jsapi_ticket failure ");
@@ -72,7 +72,7 @@ public class WeChatService {
 
     @Cacheable(value = "wechat:get_jsagent_ticket",key="#token")
     public String getJsAgentTicket(String token) throws BusinessException {
-        String url = weChatConfig.getJsAgentTicketUrl(token);
+        String url = apiConfig.getJsAgentTicketUrl(token);
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         if(response.getStatusCode() != HttpStatus.OK){
             throw new BusinessException(" wechat http get_jsagent_ticket failure ");
@@ -84,12 +84,12 @@ public class WeChatService {
 
 
 
-    String getUserIndexPageUrl(UserInfo userInfo, String token) throws BusinessException {
+    String getPage(UserInfo userInfo, String token) throws BusinessException {
         UserDetail userDetail;
         Map<String, String> params = new HashMap<>(1);
         params.put("user_ticket", userInfo.getUser_ticket());
         ResponseEntity<String> entity;
-        String url = weChatConfig.getUserDetailUrl(token);
+        String url = apiConfig.getUserDetailUrl(token);
         entity = restTemplate.postForEntity(url, params, String.class);
         logger.info(" get gov-wechat user detail  body = {}",entity.getBody());
         if (entity.getStatusCode() != HttpStatus.OK && StringUtil.isEmpty(entity.getBody())) {
@@ -98,7 +98,7 @@ public class WeChatService {
         userDetail = JSONObject.parseObject(entity.getBody(), UserDetail.class);
         String page;
         try{
-            page = weChatConfig.toIndexPage(userDetail.getUserid(),userDetail.getName(),userDetail.getMobile(),"");
+            page = apiConfig.toHomePage(userDetail.getUserid(),userDetail.getName(),userDetail.getMobile(),"");
         }catch (UnsupportedEncodingException e) {
             throw new BusinessException("跳转政务微信首页异常");
         }

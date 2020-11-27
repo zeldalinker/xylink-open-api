@@ -2,7 +2,7 @@ package com.xylink.wechat.service;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
-import com.xylink.wechat.config.factory.WeChatConfig;
+import com.xylink.wechat.config.factory.WeChatApiConfig;
 import com.xylink.wechat.exception.BusinessException;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
@@ -27,7 +27,7 @@ public class ConfigService {
     private WeChatService weChatService;
 
     @Resource
-    private WeChatConfig weChatConfig;
+    private WeChatApiConfig weChatConfig;
 
 
     public Map<String, Object> getJsApiConfig(String url) throws BusinessException {
@@ -36,7 +36,7 @@ public class ConfigService {
         long epoch = System.currentTimeMillis() / 1000;
         String nonce = UUID.randomUUID().toString();
         String sha1Hex = toSha1Hex(url, jsApiTicket, UUID.randomUUID().toString(), epoch);
-        logger.info(" getJsApiConfig sha1 : [{}]", sha1Hex);
+        logger.info(" getJsApiConfig SHA1 : [{}]", sha1Hex);
         Map<String, Object> jsApiConfig = Maps.newHashMap();
         jsApiConfig.put("appId", weChatConfig.getCorpId());
         jsApiConfig.put("timestamp", epoch);

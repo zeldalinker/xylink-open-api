@@ -1,4 +1,4 @@
-package com.xylink.wechat.config;
+package com.xylink.wechat.filter;
 
 import com.ainemo.libra.shared.enums.ErrorStatus;
 import com.google.common.collect.Maps;

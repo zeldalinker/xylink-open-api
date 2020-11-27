@@ -28,9 +28,9 @@ public class HomeService {
         String token = weChatService.getAccessToken();
         UserInfo userInfo = weChatService.getUserInfo(code,token);
         //获取user_detail
-        String indexPage = weChatService.getUserIndexPageUrl(userInfo,token);
+        String page = weChatService.getPage(userInfo,token);
         //返回h5_index
-        logger.info(" indexPage =  {} ", indexPage);
-        return indexPage;
+        logger.info(" page =  {} ", page);
+        return page;
     }
 }

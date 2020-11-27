@@ -5,10 +5,10 @@ package com.xylink.wechat.exception;
  * version: v1
  * date: 2020-10-23
  */
-public class BusinessException extends Throwable{
+public class BusinessException extends RuntimeException{
 
-    public BusinessException() {
-        super();
+    public BusinessException(Exception e) {
+        super(e);
     }
 
     public BusinessException(String message) {

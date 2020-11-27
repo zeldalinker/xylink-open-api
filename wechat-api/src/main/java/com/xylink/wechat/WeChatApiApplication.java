@@ -12,7 +12,7 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
  * version: v1
  * date: 2020-11-22
  */
-@SpringBootApplication(scanBasePackages = {"com.xylink.*"})
+@SpringBootApplication(scanBasePackages = {"com.xylink.wechat","com.xylink.sqlite"})
 public class WeChatApiApplication extends SpringBootServletInitializer implements CommandLineRunner {
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
