@@ -19,8 +19,5 @@ public class BusinessException extends RuntimeException{
         super(message,throwable);
     }
 
-    @Override
-    public String getMessage(){
-       return super.getMessage();
-    }
+
 }

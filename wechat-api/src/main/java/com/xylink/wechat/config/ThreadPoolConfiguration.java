@@ -1,12 +1,11 @@
 package com.xylink.wechat.config;
 
+import com.xylink.wechat.config.factory.executor.ThreadPoolMdcWrapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.*;
 
 /**
  * @author 林骏
@@ -17,24 +16,15 @@ import java.util.concurrent.ThreadPoolExecutor;
 @EnableAsync
 public class ThreadPoolConfiguration {
 
-    @Bean("taskExecutor")
-    public Executor taskExecutor(){
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        // 设置核心线程数
-        executor.setCorePoolSize(50);
-        // 设置最大线程数
-        executor.setMaxPoolSize(100);
-        // 设置队列容量
-        executor.setQueueCapacity(100);
-        // 设置线程活跃时间（秒）
-        executor.setKeepAliveSeconds(60*30);
-        // 设置默认线程名称
-        executor.setThreadNamePrefix("[ xylink - wechat ]");
-        // 设置拒绝策略
-        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
-        // 等待所有任务结束后再关闭线程池
-        executor.setWaitForTasksToCompleteOnShutdown(true);
-        return executor;
+    @Bean("mdcThreadPool")
+    public ThreadPoolMdcWrapper mdcThreadPool(){
+        BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<>(100);
+        return new ThreadPoolMdcWrapper(50,
+                100,
+                60*30,
+                TimeUnit.SECONDS,
+                workQueue,
+                new ThreadPoolExecutor.CallerRunsPolicy());
     }
 
 

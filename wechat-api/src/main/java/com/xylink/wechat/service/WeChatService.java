@@ -38,10 +38,16 @@ public class WeChatService {
 
     @Cacheable(value = "wechat:gettoken")
     public String getAccessToken() throws BusinessException {
+        ResponseEntity<String> response;
         logger.info(" [ WeChat access_token ]  ");
-        ResponseEntity<String> response = restTemplate.getForEntity(apiConfig.getAccessTokenUrl(), String.class);
+        try{
+            response = restTemplate.getForEntity(apiConfig.getAccessTokenUrl(), String.class);
+        }catch (Exception e) {
+            logger.info("[wechat gettoken exception]",e);
+            throw new BusinessException(" WeChat getToken 异常 ");
+        }
         if(response.getStatusCode() != HttpStatus.OK){
-            throw new BusinessException(" wechat http failure ");
+            throw new BusinessException(" WeChat getToken 异常 ");
         }
         JSONObject json = JSONObject.parseObject(response.getBody());
         return json.getString("accessToken");

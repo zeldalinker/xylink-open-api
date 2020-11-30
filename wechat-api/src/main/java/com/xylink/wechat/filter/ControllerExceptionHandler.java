@@ -32,10 +32,11 @@ public class ControllerExceptionHandler {
     @ResponseBody
     @ResponseStatus(value = HttpStatus.FORBIDDEN)
     public Map<String, Object> handler(BusinessException exception) {
+        logger.info(" http 请求异常 ", exception);
         Map<String, Object> result = Maps.newHashMap();
         result.put("errorCode", ErrorStatus.LOGIN_INVALID_ACCOUNT_OR_PASSWORD.getErrorCode());
         result.put("userMessage", ErrorStatus.LOGIN_INVALID_ACCOUNT_OR_PASSWORD.getResId());
-        result.put("info",exception.getMessage());
+        result.put("info",exception.getCause().getMessage());
         return result;
     }
 
@@ -50,11 +51,13 @@ public class ControllerExceptionHandler {
     @ResponseStatus(value = HttpStatus.FORBIDDEN)
     public Map<String, Object> handler(HttpMessageNotReadableException exception) {
         logger.info(" http 请求异常 ", exception);
-        Map<String, Object> result = new HashMap<>();
-        result.put("errorCode", "2001");
-        result.put("userMessage", "账号密码错误");
+        Map<String, Object> result = Maps.newHashMap();
+        result.put("errorCode", ErrorStatus.LOGIN_INVALID_ACCOUNT_OR_PASSWORD.getErrorCode());
+        result.put("userMessage", ErrorStatus.LOGIN_INVALID_ACCOUNT_OR_PASSWORD.getResId());
         return result;
     }
+
+
 
 
 }

@@ -47,6 +47,7 @@ public class ApiController {
             response.sendRedirect(page);
         } catch (BusinessException | IOException e) {
             logger.error("[跳转政务微信首页异常]",e);
+            throw new BusinessException(e);
         }
     }
 
