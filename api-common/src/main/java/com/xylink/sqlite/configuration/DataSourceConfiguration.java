@@ -15,9 +15,9 @@ import javax.sql.DataSource;
  * date: 2020-11-26
  */
 @Configuration
-@PropertySource(value = {
-        "classpath*:resources/sqlite.properties",
-}, encoding = "utf-8")
+//@PropertySource(value = {
+//        "classpath*:resources/sqlite.properties",
+//}, encoding = "utf-8")
 public class DataSourceConfiguration {
 
     @Bean(destroyMethod = "", name = "EmbeddedDataSource")
