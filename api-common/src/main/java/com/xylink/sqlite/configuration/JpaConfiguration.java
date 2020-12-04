@@ -22,11 +22,6 @@ import java.util.Map;
  * date: 2020-11-26
  */
 @Configuration
-@EnableJpaRepositories(
-        basePackages = "com.xylink.*",
-        transactionManagerRef = "jpaTransactionManager",
-        entityManagerFactoryRef = "localContainerEntityManagerFactoryBean"
-)
 @EnableTransactionManagement
 public class JpaConfiguration {
     @Resource

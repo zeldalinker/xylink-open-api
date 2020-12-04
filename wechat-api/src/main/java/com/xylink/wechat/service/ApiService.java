@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 public class ApiService {
     private static final Logger logger = LoggerFactory.getLogger(MeetingService.class);
 
+
+
     @Cacheable(value = "wechat:gettoken")
     public String getToken(){
         logger.info("wechat:gettoken");

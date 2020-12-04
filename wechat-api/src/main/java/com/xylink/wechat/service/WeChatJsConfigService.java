@@ -2,7 +2,7 @@ package com.xylink.wechat.service;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
-import com.xylink.wechat.config.factory.WeChatApiConfig;
+import com.xylink.wechat.bean.ApiConfig;
 import com.xylink.wechat.exception.BusinessException;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
@@ -19,15 +19,15 @@ import java.util.UUID;
  * date: 2020-11-19
  */
 @Service
-public class ConfigService {
+public class WeChatJsConfigService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ConfigService.class);
+    private static final Logger logger = LoggerFactory.getLogger(WeChatJsConfigService.class);
 
     @Resource
     private WeChatService weChatService;
 
     @Resource
-    private WeChatApiConfig weChatConfig;
+    private ApiConfig apiConfig;
 
 
     public Map<String, Object> getJsApiConfig(String url) throws BusinessException {
@@ -38,7 +38,7 @@ public class ConfigService {
         String sha1Hex = toSha1Hex(url, jsApiTicket, UUID.randomUUID().toString(), epoch);
         logger.info(" getJsApiConfig SHA1 : [{}]", sha1Hex);
         Map<String, Object> jsApiConfig = Maps.newHashMap();
-        jsApiConfig.put("appId", weChatConfig.getCorpId());
+        jsApiConfig.put("appId", apiConfig.getCorpId());
         jsApiConfig.put("timestamp", epoch);
         jsApiConfig.put("signature", sha1Hex);
         jsApiConfig.put("nonceStr", nonce);
@@ -54,8 +54,8 @@ public class ConfigService {
         String sha1Hex = toSha1Hex(url, jsApiTicket, UUID.randomUUID().toString(), epoch);
         logger.info(" getJsAgentConfig sha1 : [{}]", sha1Hex);
         Map<String, Object> jsAgentConfig = Maps.newHashMap();
-        jsAgentConfig.put("corpid", weChatConfig.getCorpId());
-        jsAgentConfig.put("agentid", weChatConfig.getAgentId());
+        jsAgentConfig.put("corpid", apiConfig.getCorpId());
+        jsAgentConfig.put("agentid", apiConfig.getAgentId());
         jsAgentConfig.put("timestamp", epoch);
         jsAgentConfig.put("signature", sha1Hex);
         jsAgentConfig.put("nonceStr", nonce);

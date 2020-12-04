@@ -1,10 +1,10 @@
 package com.xylink.wechat.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xylink.wechat.bean.ApiConfig;
 import com.xylink.wechat.bean.wechat.UserDetail;
 import com.xylink.wechat.bean.wechat.UserInfo;
-import com.xylink.wechat.config.factory.WeChatApiConfig;
-import com.xylink.wechat.exception.BusinessException;
+ import com.xylink.wechat.exception.BusinessException;
 import jodd.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,7 @@ public class WeChatService {
     private static final Logger logger = LoggerFactory.getLogger(WeChatService.class);
 
     @Resource
-    private WeChatApiConfig apiConfig;
+    private ApiConfig apiConfig;
 
     @Resource
     private RestTemplate restTemplate;

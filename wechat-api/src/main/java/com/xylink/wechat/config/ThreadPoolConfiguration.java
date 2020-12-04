@@ -16,12 +16,12 @@ import java.util.concurrent.*;
 @EnableAsync
 public class ThreadPoolConfiguration {
 
-    @Bean("mdcThreadPool")
-    public ThreadPoolMdcWrapper mdcThreadPool(){
+    @Bean("WeChatThreadPool")
+    public ThreadPoolMdcWrapper weChatThreadPool() {
         BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<>(100);
         return new ThreadPoolMdcWrapper(50,
                 100,
-                60*30,
+                60 * 30,
                 TimeUnit.SECONDS,
                 workQueue,
                 new ThreadPoolExecutor.CallerRunsPolicy());

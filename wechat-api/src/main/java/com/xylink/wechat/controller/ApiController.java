@@ -1,12 +1,12 @@
 package com.xylink.wechat.controller;
 
-import com.xylink.wechat.bean.response.ResponseCode;
+import com.xylink.wechat.bean.ApiConfig;
 import com.xylink.wechat.bean.response.ResponseResult;
 import com.xylink.wechat.dao.po.MeetingCall;
 import com.xylink.wechat.dao.po.MeetingRoom;
-import com.xylink.wechat.dao.po.MeetingUser;
 import com.xylink.wechat.exception.BusinessException;
 import com.xylink.wechat.service.*;
+ import jodd.io.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +35,20 @@ public class ApiController {
     private MeetingService meetingService;
 
     @Resource
-    private ConfigService configService;
+    private WeChatJsConfigService wechatJsConfigService;
+
+
+    @Resource
+    WeChat weChat;
+
+
+
+    @GetMapping("/test")
+    @ResponseBody
+    public void test(){
+        weChat.save();
+    }
+
 
 
     @GetMapping("/index")
@@ -112,7 +125,7 @@ public class ApiController {
     public ResponseResult getConfig(@RequestParam("url") String url){
         ResponseResult result;
         try{
-            Map<String, Object> data =  configService.getJsApiConfig(url);
+            Map<String, Object> data =  wechatJsConfigService.getJsApiConfig(url);
             result = ResponseResult.createBySuccess(data);
         }catch (Exception e){
             logger.info(" 获取政务微信 JsApiConfig 异常 ",e);
@@ -126,7 +139,7 @@ public class ApiController {
     public ResponseResult getAgentConfig(@RequestParam("url") String url){
         ResponseResult result;
         try{
-            Map<String, Object> data =  configService.getJsAgentConfig(url);
+            Map<String, Object> data =  wechatJsConfigService.getJsAgentConfig(url);
             result = ResponseResult.createBySuccess(data);
         }catch (Exception e){
             logger.info(" 获取政务微信 JsAgentConfig 异常 ",e);

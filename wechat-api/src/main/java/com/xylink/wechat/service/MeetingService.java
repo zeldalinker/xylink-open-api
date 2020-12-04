@@ -8,11 +8,8 @@ import com.google.common.collect.Maps;
 import com.xylink.model.ReminderMeeting;
 import com.xylink.util.HttpUtil;
 import com.xylink.util.Result;
+import com.xylink.wechat.bean.ApiConfig;
 import com.xylink.wechat.bean.wechat.Articles;
-import com.xylink.wechat.config.factory.WeChatApiConfig;
-import com.xylink.wechat.dao.MeetingCallRepository;
-import com.xylink.wechat.dao.MeetingRoomRepository;
-import com.xylink.wechat.dao.MeetingUserRepository;
 import com.xylink.wechat.dao.po.MeetingCall;
 import com.xylink.wechat.dao.po.MeetingRoom;
 import com.xylink.wechat.dao.po.MeetingUser;
@@ -47,7 +44,7 @@ public class MeetingService {
     private static final Logger logger = LoggerFactory.getLogger(MeetingService.class);
 
     @Resource
-    private MeetingUserRepository meetingUserRepository;
+    private Me meetingUserRepository;
 
     @Resource
     private MeetingRoomRepository meetingRoomRepository;
@@ -56,7 +53,7 @@ public class MeetingService {
     private MeetingCallRepository meetingCallRepository;
 
     @Resource
-    private WeChatApiConfig apiConfig;
+    private ApiConfig apiConfig;
 
     @Resource
     private WeChatService weChatService;
@@ -152,7 +149,7 @@ public class MeetingService {
         }
         logger.info("[ create wechat message ] params:{}", meetingRoom.toString());
         SignatureSampleLocal sign = new SignatureSampleLocal();
-        String sdkUrl = apiConfig.getXyUrl();
+        String sdkUrl = apiConfig.getXylinkUrl();
         String token = apiConfig.getToken();
         String surl = apiConfig.getSignatureUrl();
 

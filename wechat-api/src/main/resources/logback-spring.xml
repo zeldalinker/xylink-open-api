@@ -10,32 +10,27 @@
             <pattern>%date [%thread] %-5level [%X{TRACE_ID}] %logger{50}:%line - %msg%n</pattern>
         </encoder>
     </appender>
-    <!-- redis -->
-    <appender name="RDSOUT" class="com.cwbase.logback.RedisAppender">
-        <source>wechat-api</source>
-        <tags>dev</tags>
-        <host>101.226.16.213</host>
-        <port>6379</port>
-        <key>wechat-api</key>
-        <callerStackIndex>1</callerStackIndex>
-        <additionalField>
-            <key>ParentSpanId</key>
-            <value>@{X-B3-ParentSpanId}</value>
-        </additionalField>
-        <additionalField>
-            <key>SpanId</key>
-            <value>@{X-B3-SpanId}</value>
-        </additionalField>
-        <additionalField>
-            <key>TraceId</key>
-            <value>@{X-B3-TraceId}</value>
-        </additionalField>
+    <!-- 按照每天生成日志文件 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>wechat-api.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日志文件输出的文件名-->
+            <FileNamePattern>${LOG_HOME}/lanxin.%d{yyyy-MM-dd}.log.gz</FileNamePattern>
+            <!--日志文件保留天数-->
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %.2048(%msg) %n</pattern>
+        </encoder>
+        <append>false</append>
+        <prudent>false</prudent>
     </appender>
 
     <!-- 日志输出级别 -->
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
-        <appender-ref ref="RDSOUT"/>
+        <appender-ref ref="FILE"/>
     </root>
 
     <!-- ignore error page log-->
