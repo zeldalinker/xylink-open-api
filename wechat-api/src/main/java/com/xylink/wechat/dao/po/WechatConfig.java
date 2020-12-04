@@ -1,52 +1,22 @@
 package com.xylink.wechat.dao.po;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 /**
  * @author 林骏
  * version: v1
  * date: 2020-12-03
  */
-@Entity
-@Table(name = "wechat_config")
-public class WeChatConfig {
-    @Column(name = "id")
-    @Id
-    private int id;
+public class WechatConfig extends BaseModel{
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    @Column(name = "xylink_url")
     private String xylinkUrl;
-    @Column(name = "enterpriseId")
     private String enterpriseId;
-    @Column(name = "instance")
     private String instance;
 
 
-    @Column(name = "token")
     private String token;
-    @Column(name = "corpid")
     private String corpId;
-    @Column(name = "corpSecret")
     private String corpSecret;
-    @Column(name = "agentId")
     private String agentId;
-    @Column(name = "wechat_url")
     private String wechatUrl;
-    @Column(name = "wechat_page_url")
     private String wechatPageUrl;
 
     public String getXylinkUrl() {

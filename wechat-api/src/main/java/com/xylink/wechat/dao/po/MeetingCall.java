@@ -1,5 +1,9 @@
 package com.xylink.wechat.dao.po;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * @author 林骏
  * @description 通话记录

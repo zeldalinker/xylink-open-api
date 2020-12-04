@@ -1,8 +1,10 @@
 package com.xylink.wechat.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
+import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,14 +24,14 @@ import java.sql.SQLException;
  */
 
 @Configuration
-@MapperScan(basePackages = "com.xylink.admin")
+@MapperScan(basePackages = "com.xylink.wechat.dao")
 public class DataSourceConfiguration{
 
     @Bean(initMethod = "init", destroyMethod = "close")
-    public DruidDataSource dataSource(@Value("${sqlite.driverClassName}") String driverClassName,
-                                      @Value("${sqlite.url}") String url,
-                                      @Value("${sqlite.username}") String username,
-                                      @Value("${sqlite.password}") String password) throws SQLException {
+    public DruidDataSource dataSource(@Value("${jdbc.driverClassName}") String driverClassName,
+                                      @Value("${jdbc.url}") String url,
+                                      @Value("${jdbc.username}") String username,
+                                      @Value("${jdbc.password}") String password) throws SQLException {
 
         DruidDataSource dataSource = new DruidDataSource();
         dataSource.setDriverClassName(driverClassName);
@@ -51,20 +53,18 @@ public class DataSourceConfiguration{
         dataSource.setTestOnBorrow(false);
         dataSource.setTestOnReturn(false);
 
-        dataSource.setPoolPreparedStatements(true);
-        dataSource.setMaxOpenPreparedStatements(20);
+        dataSource.setPoolPreparedStatements(false);
 
         return dataSource;
     }
 
     @Bean(name = "sqlSessionFactory")
-    public SqlSessionFactoryBean sqlSessionFactory(@Autowired @Qualifier("dataSource") DataSource dataSource)
+    public MybatisSqlSessionFactoryBean sqlSessionFactory(@Autowired @Qualifier("dataSource") DataSource dataSource)
             throws Exception {
-        SqlSessionFactoryBean sqlSessionFactory = new SqlSessionFactoryBean();
+        MybatisSqlSessionFactoryBean sqlSessionFactory = new MybatisSqlSessionFactoryBean();
         sqlSessionFactory.setDataSource(dataSource);
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        sqlSessionFactory.setConfigLocation(resolver.getResource("sqlMapConfig.xml"));
-        sqlSessionFactory.setMapperLocations(resolver.getResources("com/xylink/admin/dao/sql/*Mapper.xml"));
+        sqlSessionFactory.setMapperLocations(resolver.getResources("com/xylink/wechat/dao/sql/*Mapper.xml"));
         return sqlSessionFactory;
     }
 

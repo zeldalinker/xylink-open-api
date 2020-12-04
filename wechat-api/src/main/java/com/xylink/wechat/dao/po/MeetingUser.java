@@ -1,5 +1,9 @@
 package com.xylink.wechat.dao.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
+
 /**
  * @author 林骏
  * @description 参会人员
@@ -49,7 +53,6 @@ public class MeetingUser extends BaseModel{
     }
 
     public String getUid() {
-
         return uid;
     }
 

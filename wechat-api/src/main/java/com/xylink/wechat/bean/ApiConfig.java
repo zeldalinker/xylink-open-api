@@ -1,6 +1,6 @@
 package com.xylink.wechat.bean;
 
-import com.xylink.wechat.dao.po.WeChatConfig;
+import com.xylink.wechat.dao.po.WechatConfig;
 import com.xylink.wechat.exception.BusinessException;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,7 +13,7 @@ import java.net.URLEncoder;
  * date: 2020-10-24
  */
 @Configuration
-public class ApiConfig extends WeChatConfig {
+public class ApiConfig extends WechatConfig {
 
 
     public final String getAccessTokenUrl(){

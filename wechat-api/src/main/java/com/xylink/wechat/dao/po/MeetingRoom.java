@@ -1,5 +1,8 @@
 package com.xylink.wechat.dao.po;
 
+import com.xylink.model.ReminderMeeting;
+
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -42,6 +45,7 @@ public class MeetingRoom extends BaseModel{
      * 会议结束时间
      */
     private Long endTime;
+
     /**
      * 会议链接
      */

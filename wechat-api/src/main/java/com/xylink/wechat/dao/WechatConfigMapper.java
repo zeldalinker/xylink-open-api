@@ -1,7 +1,6 @@
 package com.xylink.wechat.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.xylink.wechat.dao.po.MeetingRoom;
 import com.xylink.wechat.dao.po.WechatConfig;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -11,7 +10,8 @@ import org.apache.ibatis.annotations.Update;
  * version: v1
  * date: 2020-12-04
  */
-public interface MeetingRoomMapper extends BaseMapper<MeetingRoom> {
+public interface WechatConfigMapper extends BaseMapper<WechatConfig> {
+
     @Select("select count(1) from wechat_config")
     int count();
 
