@@ -1,10 +1,10 @@
 package com.xylink.wechat.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xylink.wechat.bean.ApiConfig;
 import com.xylink.wechat.bean.wechat.UserDetail;
 import com.xylink.wechat.bean.wechat.UserInfo;
- import com.xylink.wechat.exception.BusinessException;
+import com.xylink.wechat.config.WechatApiConfig;
+import com.xylink.wechat.exception.BusinessException;
 import jodd.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,7 @@ public class WeChatService {
     private static final Logger logger = LoggerFactory.getLogger(WeChatService.class);
 
     @Resource
-    private ApiConfig apiConfig;
+    private WechatApiConfig wechatApiConfig;
 
     @Resource
     private RestTemplate restTemplate;
@@ -39,9 +39,9 @@ public class WeChatService {
     @Cacheable(value = "wechat:gettoken")
     public String getAccessToken() throws BusinessException {
         ResponseEntity<String> response;
-        logger.info(" [ WeChat access_token ]  ");
+        logger.info(" [ WeChat access_token ] url = {} ",wechatApiConfig.getAccessTokenUrl());
         try{
-            response = restTemplate.getForEntity(apiConfig.getAccessTokenUrl(), String.class);
+            response = restTemplate.getForEntity(wechatApiConfig.getAccessTokenUrl(), String.class);
         }catch (Exception e) {
             logger.info("[wechat gettoken exception]",e);
             throw new BusinessException(" WeChat getToken 异常 ");
@@ -50,24 +50,26 @@ public class WeChatService {
             throw new BusinessException(" WeChat getToken 异常 ");
         }
         JSONObject json = JSONObject.parseObject(response.getBody());
-        return json.getString("accessToken");
+        logger.info(" WeChat access_token = {} ",json);
+
+        return json.getString("access_token");
 
     }
 
     @Cacheable(value = "wechat:user_getuserinfo",key="#code+#token")
     public UserInfo getUserInfo(String code, String token) throws BusinessException {
-        logger.info(" [ WeChat GetUserInfo]  ");
-        String url = apiConfig.getUserInfoUrl(token,code);
+        String url = wechatApiConfig.getUserInfoUrl(token,code);
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         if(response.getStatusCode() != HttpStatus.OK){
             throw new BusinessException(" wechat http failure ");
         }
+        logger.info("  WeChat GetUserInfo = {}  ",response.getBody());
         return JSONObject.parseObject(response.getBody(), UserInfo.class);
     }
 
     @Cacheable(value = "wechat:get_jsapi_ticket",key="#token")
     public String getJsApiTicket(String token) throws BusinessException {
-        String url = apiConfig.getJsApiTicketUrl(token);
+        String url = wechatApiConfig.getJsApiTicketUrl(token);
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         if(response.getStatusCode() != HttpStatus.OK){
             throw new BusinessException(" wechat http get_jsapi_ticket failure ");
@@ -78,7 +80,7 @@ public class WeChatService {
 
     @Cacheable(value = "wechat:get_jsagent_ticket",key="#token")
     public String getJsAgentTicket(String token) throws BusinessException {
-        String url = apiConfig.getJsAgentTicketUrl(token);
+        String url = wechatApiConfig.getJsAgentTicketUrl(token);
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         if(response.getStatusCode() != HttpStatus.OK){
             throw new BusinessException(" wechat http get_jsagent_ticket failure ");
@@ -95,7 +97,7 @@ public class WeChatService {
         Map<String, String> params = new HashMap<>(1);
         params.put("user_ticket", userInfo.getUser_ticket());
         ResponseEntity<String> entity;
-        String url = apiConfig.getUserDetailUrl(token);
+        String url = wechatApiConfig.getUserDetailUrl(token);
         entity = restTemplate.postForEntity(url, params, String.class);
         logger.info(" get gov-wechat user detail  body = {}",entity.getBody());
         if (entity.getStatusCode() != HttpStatus.OK && StringUtil.isEmpty(entity.getBody())) {
@@ -104,7 +106,7 @@ public class WeChatService {
         userDetail = JSONObject.parseObject(entity.getBody(), UserDetail.class);
         String page;
         try{
-            page = apiConfig.toHomePage(userDetail.getUserid(),userDetail.getName(),userDetail.getMobile(),"");
+            page = wechatApiConfig.toHomePage(userDetail.getUserid(),userDetail.getName(),userDetail.getMobile(),"");
         }catch (UnsupportedEncodingException e) {
             throw new BusinessException("跳转政务微信首页异常");
         }

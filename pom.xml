@@ -11,12 +11,6 @@
     <modules>
         <module>api-admin</module>
         <module>wechat-api</module>
-        <module>api-proxy</module>
-        <module>api-gateway</module>
-        <module>ftp-api</module>
-        <module>api-deploy</module>
-        <module>api-common</module>
-
     </modules>
 
     <dependencyManagement>

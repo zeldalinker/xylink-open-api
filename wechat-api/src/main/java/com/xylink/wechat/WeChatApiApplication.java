@@ -3,25 +3,17 @@ package com.xylink.wechat;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 /**
  * @author 林骏
  * version: v1
  * date: 2020-11-22
  */
-@SpringBootApplication(scanBasePackages = {"com.xylink.wechat","com.xylink.sqlite"},
-        exclude = {DataSourceAutoConfiguration.class}
-)
-@EnableJpaRepositories(
-        basePackages = "com.xylink.wechat.dao",
-        transactionManagerRef = "jpaTransactionManager",
-        entityManagerFactoryRef = "localContainerEntityManagerFactoryBean"
-)
+@SpringBootApplication(scanBasePackages = {"com.xylink.wechat"})
+@EnableAspectJAutoProxy
 public class WeChatApiApplication extends SpringBootServletInitializer implements CommandLineRunner {
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {

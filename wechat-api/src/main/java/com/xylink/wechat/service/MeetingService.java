@@ -8,8 +8,11 @@ import com.google.common.collect.Maps;
 import com.xylink.model.ReminderMeeting;
 import com.xylink.util.HttpUtil;
 import com.xylink.util.Result;
-import com.xylink.wechat.bean.ApiConfig;
 import com.xylink.wechat.bean.wechat.Articles;
+import com.xylink.wechat.config.WechatApiConfig;
+import com.xylink.wechat.dao.MeetingCallRepository;
+import com.xylink.wechat.dao.MeetingRoomRepository;
+import com.xylink.wechat.dao.MeetingUserRepository;
 import com.xylink.wechat.dao.po.MeetingCall;
 import com.xylink.wechat.dao.po.MeetingRoom;
 import com.xylink.wechat.dao.po.MeetingUser;
@@ -44,7 +47,7 @@ public class MeetingService {
     private static final Logger logger = LoggerFactory.getLogger(MeetingService.class);
 
     @Resource
-    private Me meetingUserRepository;
+    private MeetingUserRepository meetingUserRepository;
 
     @Resource
     private MeetingRoomRepository meetingRoomRepository;
@@ -53,7 +56,7 @@ public class MeetingService {
     private MeetingCallRepository meetingCallRepository;
 
     @Resource
-    private ApiConfig apiConfig;
+    private WechatApiConfig wechatApiConfig;
 
     @Resource
     private WeChatService weChatService;
@@ -92,13 +95,13 @@ public class MeetingService {
         }
         for (MeetingUser meetingUser : meetingRoom.getUserList()) {
             meetingUser.setMeetingRoom(meetingRoom);
-            String meetingUrl = apiConfig.getMeetingDetailUrl(meetingRoom.getMeetingId(),
+            String meetingUrl = wechatApiConfig.getMeetingDetailUrl(meetingRoom.getMeetingId(),
                     meetingUser.getUserDisplayName(), meetingUser.getUserPhone());
             logger.info("[ create meeting ] send meeting info link url: " + meetingUrl);
             String params = convertWeChatMessage(meetingUser.getUid(), meetingRoom.getTitle(), meetingUrl);
             logger.info("[ create meeting ] send message params is {}", params);
             String accessToken = weChatService.getAccessToken();
-            String messageUrl = apiConfig.getMessageUrl(accessToken);
+            String messageUrl = wechatApiConfig.getMessageUrl(accessToken);
             ResponseEntity response = restTemplate.postForObject(messageUrl, params, ResponseEntity.class);
             if (response.getStatusCode() != null) {
                 logger.info("[ create a meeting failure]");
@@ -134,7 +137,7 @@ public class MeetingService {
         Map<String, Object> params = Maps.newHashMap();
         params.put("touser", uid);
         params.put("msgtype", "news");
-        params.put("agentid", apiConfig.getAgentId());
+        params.put("agentid", wechatApiConfig.getAgentId());
         HashMap<String, Object> links = Maps.newHashMap();
         Articles[] articles = {new Articles(title, "", meetingUrl, "")};
         links.put("articles", articles);
@@ -149,9 +152,9 @@ public class MeetingService {
         }
         logger.info("[ create wechat message ] params:{}", meetingRoom.toString());
         SignatureSampleLocal sign = new SignatureSampleLocal();
-        String sdkUrl = apiConfig.getXylinkUrl();
-        String token = apiConfig.getToken();
-        String surl = apiConfig.getSignatureUrl();
+        String sdkUrl = wechatApiConfig.getXylinkUrl();
+        String token = wechatApiConfig.getToken();
+        String surl = wechatApiConfig.getSignatureUrl();
 
         ReminderMeeting reminderMeeting = new ReminderMeeting();
         reminderMeeting.setStartTime(meetingRoom.getStartTime());
@@ -176,7 +179,7 @@ public class MeetingService {
         meetingRoom.setMeetingId(meetingId);
         meetingRoom.setUserPhone(meetingRoom.getUid());
         meetingRoom.setMeetingRoomNumber(meetingRoomNumber);
-        meetingRoom.setMeetingUrl(apiConfig.getMeetingDetailUrl());
+        meetingRoom.setMeetingUrl(wechatApiConfig.getMeetingDetailUrl());
     }
 
 
@@ -196,7 +199,7 @@ public class MeetingService {
         meetingCallRepository.save(meetingCall);
     }
 
-    public Map<String,Object> selectCloudCall(String number) {
+    public Map<String,Object> selectCall(String number) {
         Map<String,Object> sdkCall = Maps.newHashMap();
         if (!StringUtils.isEmpty(number) && isPhone(number)) {
             number = number.replace("-", "");
@@ -206,7 +209,7 @@ public class MeetingService {
             if (number.contains("#")) {
                 number = URLEncoder.encode(number,"UTF-8");
             }
-            String meetingCallUrl  = apiConfig.getSdkMeetingCallUrl(number);
+            String meetingCallUrl  = wechatApiConfig.getSdkMeetingCallUrl(number);
             ResponseEntity<String> response = restTemplate.getForEntity(meetingCallUrl, String.class);
 
             if(response.getStatusCode()!= HttpStatus.OK){

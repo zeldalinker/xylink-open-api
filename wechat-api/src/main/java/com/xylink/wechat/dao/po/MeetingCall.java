@@ -1,29 +1,39 @@
 package com.xylink.wechat.dao.po;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * @author 林骏
  * @description 通话记录
  * @create 2019/4/12
  */
+@Entity
+@Table(name = "meeting_call")
 public class MeetingCall extends BaseModel {
     /**
      * 会议室号
      */
+    @Column(name = "call_number")
     private String callNumber;
 
     /**
      * 通话时间
      */
+    @Column(name = "call_time")
     private Long callTime;
 
     /**
      * 会议室标题
      */
+    @Column(name = "display_name")
     private String displayName;
 
     /**
      * 通话人电话
      */
+    @Column(name = "user_phone")
     private String userPhone;
 
 

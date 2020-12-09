@@ -1,12 +1,14 @@
 package com.xylink.admin.controller;
 
-import com.xylink.admin.service.WeChatConfigService;
+import com.xylink.admin.entity.WechatApiConfig;
+import com.xylink.admin.service.WechatConfigService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author 林骏
@@ -18,26 +20,27 @@ import javax.annotation.Resource;
 public class WeChatConfigController {
 
     @Resource
-    private WeChatConfigService weChatConfigService;
+    private WechatConfigService weChatConfigService;
 
-
-    @GetMapping("/status")
-    public String status(){
-        return weChatConfigService.status();
+    @PostMapping("/create")
+    public WechatApiConfig create(){
+        return weChatConfigService.create();
     }
 
 
     @GetMapping("/list")
-    public void list(){
-         weChatConfigService.list();
+    public List<WechatApiConfig> list(){
+        return weChatConfigService.list();
     }
 
 
-    @PostMapping("/create")
-    public void create(){
-        weChatConfigService.create();
+    @GetMapping("/select")
+    public WechatApiConfig select(int name){
+        return weChatConfigService.select(name);
     }
 
-
-
+    @GetMapping("/setup")
+    public WechatApiConfig setup(){
+        return weChatConfigService.setup(24);
+    }
 }

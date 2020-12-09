@@ -20,14 +20,14 @@ import java.util.concurrent.TimeUnit;
 public class CaffeineCacheConfig {
 
     /**
-     * 创建基于Caffeine的Cache Manager
+     * 政务微信缓存
      */
-    @Bean("localCacheMgr")
-    public CacheManager localCacheMgr() {
+    @Bean("wechatCacheMgr")
+    public CacheManager wechatCacheManager() {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager();
         cacheManager.setCaffeine(Caffeine.newBuilder().recordStats()
-                .expireAfterWrite(10, TimeUnit.MINUTES)
-                .maximumSize(10));
+                .expireAfterWrite(7200, TimeUnit.SECONDS)
+                .maximumSize(100));
         return cacheManager;
     }
 

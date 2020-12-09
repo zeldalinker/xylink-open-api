@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deployHelperConfiguration>
+    <!--指定deployHelper自动上传时所连接的服务器以及要使用的deploy配置-->
+    <profile server="dev" deploy="dev"></profile>
+    <servers>
+        <!--可以配置多个server节点,代表的是目标服务器-->
+        <server profile="dev" host="192.168.0.223" port="22" username="root" password="123456"></server>
+    </servers>
+    <deploys>
+        <!--目标服务器存在启动&停止脚本-->
+        <deploy profile="dev"
+                source="target/wechat-api.jar"
+                target="/home/xiaoymin/test/test1/demo-http-1.0.jar"
+                processName="demo-http-1.0.jar"
+                activeDefaultStart="true"
+                startShell="/home/xiaoymin/test/test1/startup.sh"
+                stopShell="/home/xiaoymin/test/test1/stop.sh">
+        </deploy>
+        <!--不存在启动脚本,使用deploy-helper默认的脚本-->
+        <deploy profile="test"
+                source="target/demo-http-1.0.jar"
+                target="/home/xiaoymin/test/test5/demo-http-1.0.jar"
+                processName="demo-http-1.0.jar"
+                activeDefaultStart="true">
+        </deploy>
+    </deploys>
+</deployHelperConfiguration>

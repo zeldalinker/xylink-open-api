@@ -35,3 +35,9 @@ gradlew
 gradlew.bat
 catalina.base_IS_UNDEFINED/
 
+
+wechat-api/*.log
+wechat-api/*.iml
+*.log
+
+

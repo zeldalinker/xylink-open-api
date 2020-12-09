@@ -1,5 +1,6 @@
 package com.xylink.wechat.service;
 
+import com.alibaba.fastjson.JSON;
 import com.xylink.wechat.bean.wechat.UserInfo;
 import com.xylink.wechat.exception.BusinessException;
 import org.slf4j.Logger;
@@ -23,9 +24,10 @@ public class HomeService {
     @Resource
     private WeChatService weChatService;
 
-    public String toPage(String code) throws BusinessException {
+    public String toHomePage(String code) throws BusinessException {
         //获取accessToken
         String token = weChatService.getAccessToken();
+        logger.info(" code = {} ,token = {} ",code,token);
         UserInfo userInfo = weChatService.getUserInfo(code,token);
         //获取user_detail
         String page = weChatService.getPage(userInfo,token);
